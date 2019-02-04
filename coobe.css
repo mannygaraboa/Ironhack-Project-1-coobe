@@ -1,0 +1,47 @@
+#grid {
+    float: left;
+    padding: 50px 0px;
+    border-color: black;
+}
+.sunsetblend-img {
+    width: 1000px;
+    height: 500px;
+  }
+
+.game-title {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 100px;
+    height: 100px;
+}
+
+#start-button {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -60px;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+}
+
+.canvas {
+    border-color: black;
+}
+
+html{
+    /* background-image: url("sunsetblend.png");
+    background-position: inherit; */
+    background: linear-gradient(#e262c2, #f15e24);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    /* background-size: cover; */
+}
