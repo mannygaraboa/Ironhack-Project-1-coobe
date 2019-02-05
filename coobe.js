@@ -4,8 +4,8 @@ let beats = []
 
 function music() {
   setInterval(function () {
-    time += 10
-  }, 10)
+    time += 1
+  }, 1)
   var audio = new Audio("Synthetic Life.mp3")
   audio.play();
 }
@@ -77,7 +77,7 @@ function startGame()
         if(e.keyCode == 32)
         {
             jump();
-            beats.push(time);
+            beats.push(frames);
             console.log("beat");
             coobe.jumpPressed = true;
         }
@@ -103,7 +103,7 @@ function startGame()
         ctx.lineTo(obstacle.x + 30, obstacle.y);
         ctx.fillStyle = "black"
         ctx.fill();
-        obstacle.x -= 5;
+        obstacle.x -= 10;
     }
 
 
@@ -118,14 +118,17 @@ function startGame()
 
     //setInterval(createSpikes, 2000)
     //let beats = [4400, 5000, 6300, 7600, 8400, 8900, 17300, 17500, 17700, 17900, 18100, 18300, 18500]
-    let beatles = [2600, 5270, 6650, 7960, 9280, 10520, 11840, 13150, 14440, 15120, 15770, 17060, 17750, 18440, 19710, 20960, 21950]
+    //let beatles = [2600, 5270, 6650, 7960, 9280, 10520, 11840, 13150, 14440, 15120, 15770, 17060, 17750, 18440, 19710, 20960, 21950]
+    //let beatles = [880, 2140, 3480, 4850, 6090, 6710, 7360, 8020, 8660, 9280, 9950, 10630, 11270, 11930, 12590]
+    let beatles = [159, 323, 401, 477, 556, 633, 710, 792, 830, 873, 914, 951, 1027, 1069, 1110, 1187, 1225, 1262];
     createSpikes()
     function createSpikes()
     {
         for(let i=0; i<beatles.length; i++)
         {
-            spikes.push({...obstacle, x:beatles[i]/1})
+            spikes.push({...obstacle, x:beatles[i]*10+150})
         }
+        console.log(spikes)
     }
 
     function collision()
@@ -162,10 +165,13 @@ function startGame()
         drawCoobe(coobe.x, coobe.y, 30, 30, "rgb(23, 234, 167)");
         //drawOneSpike();
         drawSpikes()
-        //frames++; 
+        frames++; 
         collision();
     }
     animate();
+
+
+   // setInterval(animate, 1)
 }
 
 
