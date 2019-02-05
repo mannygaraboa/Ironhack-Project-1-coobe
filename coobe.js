@@ -1,4 +1,15 @@
 //To start the game
+let time = 0;
+let beats = []
+
+function music() {
+  setInterval(function () {
+    time += 10
+  }, 10)
+  var audio = new Audio("Synthetic Life.mp3")
+  audio.play();
+}
+
 let coobe = 
 {
     x: 100,
@@ -25,7 +36,7 @@ function startGame()
     let canvas = document.getElementById('grid');
     let ctx = canvas.getContext('2d');
     //document.getElementById().blur;
-
+    music();
     canvas.width = 800;
     canvas.height = 300;
     
@@ -38,6 +49,7 @@ function startGame()
         ctx.rect(x, y, width, height, color)
         ctx.fillStyle = color;
         ctx.fill();
+        ctx.strokeRect(x, y, width, height, "rgb(0, 221, 255)")
         ctx.closePath();
         
         if(coobe.jumpPressed){
@@ -46,59 +58,9 @@ function startGame()
         if(!coobe.jumpPressed && coobe.y < 270){
             coobe.y += 5;
         }
-        if(coobe.y < 220){
+        if(coobe.y < 200){
             coobe.jumpPressed = false;
         }
-
-
-             // if(coobe.jumpPressed){
-        //     drag++; 
-        //     coobe.y -= (2 - (drag/30))
-        // }
-        // if(!coobe.jumpPressed && coobe.y < 270){
-        //     drag++;
-        //     coobe.y += (2 + (drag/30))
-        // }
-        // console.log(coobe.y)
-        // if(coobe.y < 212){
-        //     coobe.jumpPressed = false;
-        //     drag = 0; 
-        //     //coobe.y = 270;
-        // }
-        // if(coobe.y > 270){
-        //     coobe.y = 270;
-        //     drag = 0;
-        // }
-
-        /*if(coobe.jumpPressed && coobe.y > 220 && coobe.y <= 270)       // Will make cube jump
-        {
-            speed = 0;
-            speed += 3;
-            resistance++;
-            speed - resistance;
-            coobe.y -= speed;
-        }
-
-        console.log(coobe);
-        if(coobe.y == 219)
-        {
-            coobe.jumpPressed = false;
-        }
-        if(coobe.y > 220  && !coobe.jumpPressed)
-        {
-            speed = 1;
-            coobe.y += 1;
-        }
-        else if(coobe.y <= 220)
-        {
-
-        }
-
-        else if(coobe.jumpPressed === false)
-        {
-            speed = 0;
-            resistance = 0;
-        }*/
     }
 
     function jump()
@@ -115,6 +77,8 @@ function startGame()
         if(e.keyCode == 32)
         {
             jump();
+            beats.push(time);
+            console.log("beat");
             coobe.jumpPressed = true;
         }
         else
@@ -123,6 +87,7 @@ function startGame()
         }
     }
     
+
     var obstacle = 
     {
         x: 850,
@@ -136,40 +101,47 @@ function startGame()
         ctx.moveTo(obstacle.x,obstacle.y);
         ctx.lineTo(obstacle.x + 15, obstacle.y - 30);
         ctx.lineTo(obstacle.x + 30, obstacle.y);
+        ctx.fillStyle = "black"
         ctx.fill();
         obstacle.x -= 5;
     }
 
 
-    function drawSpikes(){
-        for(let spike of spikes){
+    function drawSpikes()
+    {
+        for(let spike of spikes)
+        {
             drawOneSpike(spike)
         }
     }
 
 
-
     //setInterval(createSpikes, 2000)
+    //let beats = [4400, 5000, 6300, 7600, 8400, 8900, 17300, 17500, 17700, 17900, 18100, 18300, 18500]
+    let beatles = [2600, 5270, 6650, 7960, 9280, 10520, 11840, 13150, 14440, 15120, 15770, 17060, 17750, 18440, 19710, 20960, 21950]
     createSpikes()
-    function createSpikes(){
-        for(let i=0; i<100; i++){
-            spikes.push({...obstacle, x:850+(i*300)})
+    function createSpikes()
+    {
+        for(let i=0; i<beatles.length; i++)
+        {
+            spikes.push({...obstacle, x:beatles[i]/1})
         }
     }
 
     function collision()
     {
-        for(let spike of spikes){
+        for(let spike of spikes)
+        {
 
             if(
                 spike.y - 30 == coobe.y             // spike hit cube from underneath
                 && ((coobe.x <= spike.x          // spike is right of cube
                 && coobe.x >= spike.x )          // spike is left of cube
-                || (coobe.x + 30 >= spike.x      // spike hit cube from the back
-                && coobe.x + 30 <= spike.x)))    // obstacle hit cube from the front
+                || (coobe.x + 25 >= spike.x      // spike hit cube from the back
+                && coobe.x + 25 <= spike.x)))    // obstacle hit cube from the front
             {
                 gameOver = true; 
-                alert("collision");           // cube explodes and restarts game
+                //alert("collision");           // cube explodes and restarts game
             }
         }
     }
@@ -179,36 +151,22 @@ function startGame()
 
     function animate()
     {
-        if(gameOver){
-            //return;
+        if(gameOver)
+        {
             window.location.reload()
             return;
         }
         window.requestAnimationFrame(animate);
         //draw everything and erase everything
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawCoobe(coobe.x, coobe.y, 30, 30, "black");
+        drawCoobe(coobe.x, coobe.y, 30, 30, "rgb(23, 234, 167)");
         //drawOneSpike();
         drawSpikes()
-        frames++; 
+        //frames++; 
         collision();
     }
     animate();
 }
-//             //streetlines();
-//             //ctx.drawImage(img, car.x, car.y, 150*imgScale/2,150); //car
-//             animateObstacle();
+
 
    
-
-        
-
-
-// if(
-//     obstacle.y - 30 == coobe.y             // obstacle hit cube from underneath
-//     && ((coobe.x <= obstacle.x          // obstacle is right of cube
-//     && coobe.x >= obstacle.x )          // obstacle is left of cube
-//     || (coobe.x + 30 >= obstacle.x      // obstacle hit cube from the back
-//     && coobe.x + 30 <= obstacle.x)))    // obstacle hit cube from the front
-// {
-//     console.log("collision");      
