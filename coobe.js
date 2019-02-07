@@ -2,13 +2,19 @@
 let time = 0;
 let beats = [];
 
-function music() {
-  setInterval(function () {
-    time += 1;
-  }, 1)
+let noise = new Audio("laser_death_noise.mp3");
+
+function music() 
+{
+    setInterval(function () 
+    {
+        time += 1;
+    }, 1)
   var audio = new Audio("Synthetic Life.mp3")
   audio.play();
+
 }
+
 
 let coobe = 
 {
@@ -17,8 +23,7 @@ let coobe =
     width: 30,
     height: 30,
     jumpPressed: false,
-    speed: 0,
-    resistance: 0,
+    //jumpLimit: 
     color: "rgb(23, 234, 167)",
     falling: false
 };
@@ -47,7 +52,7 @@ function startGame()
     music();
     animate();
     // setInterval(animate, 1)
- }
+}
 
     //let drag = 0;
     function drawCoobe()
@@ -62,18 +67,19 @@ function startGame()
 
         if(coobe.jumpPressed)
         {
-            coobe.y -= 5;
+            coobe.y -= 7;
             coobe.falling = false;
         }
         if(!coobe.jumpPressed && coobe.y < 270)
         {
-            coobe.y += 5;
+            coobe.y += 7;
             coobe.falling = true;
         }
         if(coobe.y < 200)
         {
             coobe.jumpPressed = false;
         }
+        
     }
 
 
@@ -102,13 +108,8 @@ function startGame()
     {
         x: 850,
         y: 300,
-        width: 30,
-        height: 30,
-    }
-    var obstacle1Tip = 
-    {
-        x: 850,
-        y: 270
+        width: 25,
+        height: 25,
     }
     function drawOneSpike(obstacle1)
     {
@@ -144,8 +145,8 @@ function startGame()
     var obstacle2 = 
     {
         x: 850,
-        y: 270 - Math.random() * 30,
-        width: 530,
+        y: 270,
+        width: 30,
         height: 30
     }
     function drawOneSquare(obstacle2)
@@ -165,7 +166,7 @@ function startGame()
         }
     }
     // Map of Squares
-    let squareBeatles = [100, 300, 340, 550, 780, 1000, 1100, 1150];
+    let squareBeatles = [200, 400, 600, 800, 1000, 1200, 1400, 1600];
     createSquares()
     function createSquares()
     {
@@ -214,27 +215,111 @@ function startGame()
     }
 
 
-    //setInterval(createSpikes, 2000)
-    //let beats = [4400, 5000, 6300, 7600, 8400, 8900, 17300, 17500, 17700, 17900, 18100, 18300, 18500]
-
+    // COLLISION AND PLATFORMING
     function collision()
     {
         for(let spike of spikes)
         {
-            console.log(
-                //spike.y, coobe.y
+            if 
+            (coobe.x < spike.x + spike.width &&
+            coobe.x + coobe.width > spike.x &&
+            coobe.y < spike.y &&
+            coobe.y + coobe.height > spike.y - 30) 
+            {
+                console.log("collided")
 
-            )
-            if (coobe.x < spike.x + spike.width &&
-                coobe.x + coobe.width > spike.x &&
-                coobe.y < spike.y &&
-                coobe.y + coobe.height > spike.y - 30) 
+                gameOver = true; 
+                // collision detected!
+            }
+                
+        }
+
+        for(let square of squares)
+        {
+            if 
+            (coobe.x < square.x + square.width &&
+            coobe.x + coobe.width > square.x &&
+            coobe.y < square.y + square.height &&
+            coobe.y + coobe.height > square.y) 
+            {
+
+                if(coobe.falling)
                 {
-                    console.log("collided")
-                    gameOver = true; 
-                    // collision detected!
+                    console.log("on platform")
+                    coobe.y = square.y - square.height
+                    coobe.falling = false;
+                    //debugger
+                    //coobe.y = coobe.y - (square.height)
                 }
-                // (coobe.x + 20 >= spike.x            // spike hit cube from the back
+                else
+                {
+                    gameOver = true; 
+                }
+                    //gameOver = true; 
+                    // collision detected!
+            } 
+        }
+
+        for(let platform of platforms)
+        {
+            if 
+            (coobe.x < platform.x + platform.width &&
+            coobe.x + coobe.width > platform.x &&
+            coobe.y < platform.y + platform.height &&
+            coobe.y + coobe.height > platform.y) 
+            {
+
+                if(coobe.falling)
+                {
+                    console.log("on platform")
+                    coobe.y = platform.y - platform.height
+                    coobe.falling = false;
+                    //debugger
+                    //coobe.y = coobe.y - (square.height)
+                }
+                else
+                {
+                    gameOver = true; 
+                }
+                    //gameOver = true; 
+                    // collision detected!
+            } 
+        }
+    }
+    
+    let frames = 0; 
+
+    function animate()
+    {
+        if(gameOver)
+        {
+            noise.play();
+            setTimeout(function() 
+            {
+                window.location.reload()
+            }, 1000)
+            
+            return;
+        }
+        window.requestAnimationFrame(animate);
+        //draw everything and erase everything
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawCoobe();
+        //drawOneSpike();
+        drawSpikes();
+        drawSquares();
+        drawPlatforms();
+        collision();
+        frames++; 
+    }
+
+
+// Beat Interval Patterns:
+// 149, 312, 387, 473, 551, 628, 706, 788, 829, 869, 909, 948, 1023, 1065, 1106, 1186, 1223, 1261, 1332, 1375, 1414, 1420, 1463, 1543, 1581, 1587, 1620, 1699, 1766, 1772, 1849, 1854, 1866, 1930, 1973, 2013, 2049, 2091, 2127, 2196, 2202, 2315, 2321, 2429, 2434, 2533, 2539, 2631, 2636, 2713, 2756, 2796, 2865, 2871, 2942, 2949, 3019, 3026, 3101, 3143, 3184, 3295, 3334, 3375, 3415, 3447, 3452, 3495, 3532, 3571, 3613, 3653, 3692, 3729, 3735, 3769, 3809, 3847, 3878, 3884, 3928, 3963, 4004, 4041, 4047, 4083, 4122, 4161, 4197, 4203, 4239, 4277, 4315, 4354, 4429, 4505, 4549, 4585, 4660, 4666, …]
+
+
+// Spikes Collision
+// (coobe.x + 20 >= spike.x            // spike hit cube from the back
                 // && coobe.x + 20 <= spike.x
                 // && coobe.y == 270)                  // spike hit cube from the front
                 // || (coobe.x + 20 == spike.x
@@ -250,32 +335,9 @@ function startGame()
             
                 
                 //alert("collision");           // cube explodes and restarts game   
-        }
 
-        for(let square of squares)
-        {
-            if (coobe.x < square.x + square.width &&
-                coobe.x + coobe.width > square.x &&
-                coobe.y < square.y + square.height &&
-                coobe.y + coobe.height > square.y) 
-                {
-
-                    if(coobe.falling){
-
-                    console.log("collided")
-                    //debugger
-                    //coobe.y = coobe.y - (square.height)
-                        coobe.y = square.y - square.height
-                        coobe.falling = false;
-                    }else{
-                        gameOver = true; 
-                    }
-                    //gameOver = true; 
-                    // collision detected!
-                } else {
-                   // coobe.y = coobe.y - (square.height * 1)
-                }
-            // if(
+// Squares Collision
+// if(
             //     (coobe.x + 20 >= square.x
             //     && coobe.x +20 <= square.x
             //     && coobe.y == 270)
@@ -283,32 +345,3 @@ function startGame()
             // {
 
             // }
-        }
-
-    }
-    
-
-    let frames = 0; 
-
-    function animate()
-    {
-        if(gameOver)
-        {
-            window.location.reload()
-            return;
-        }
-        window.requestAnimationFrame(animate);
-        //draw everything and erase everything
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawCoobe();
-        //drawOneSpike();
-        //drawSpikes();
-        drawSquares();
-        //drawPlatforms();
-        collision();
-        frames++; 
-    }
-
-
-// Beat Interval Patterns:
-// 149, 312, 387, 473, 551, 628, 706, 788, 829, 869, 909, 948, 1023, 1065, 1106, 1186, 1223, 1261, 1332, 1375, 1414, 1420, 1463, 1543, 1581, 1587, 1620, 1699, 1766, 1772, 1849, 1854, 1866, 1930, 1973, 2013, 2049, 2091, 2127, 2196, 2202, 2315, 2321, 2429, 2434, 2533, 2539, 2631, 2636, 2713, 2756, 2796, 2865, 2871, 2942, 2949, 3019, 3026, 3101, 3143, 3184, 3295, 3334, 3375, 3415, 3447, 3452, 3495, 3532, 3571, 3613, 3653, 3692, 3729, 3735, 3769, 3809, 3847, 3878, 3884, 3928, 3963, 4004, 4041, 4047, 4083, 4122, 4161, 4197, 4203, 4239, 4277, 4315, 4354, 4429, 4505, 4549, 4585, 4660, 4666, …]
