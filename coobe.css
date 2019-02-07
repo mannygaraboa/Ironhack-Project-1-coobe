@@ -32,6 +32,13 @@ html{
     color: white;
 }
 
+.timer {
+    position: absolute;
+    top: 80%;
+    left: 36%;
+    
+}
+
 #grid {
     border: black 1px solid;
     border-style: none none solid none;
