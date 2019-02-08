@@ -71,16 +71,15 @@ function drawCoobe()
     ctx.strokeRect(coobe.x, coobe.y, coobe.width, coobe.height, "rgb(0, 221, 255)")
     ctx.closePath();
     coobe.falling = false;
-    console.log(coobe)
-    let ground = 270
+
     if(coobe.jumpPressed && coobe.onSomething) //Jumping up 
     {
-        coobe.y -= 7 
+        coobe.y -= 7; 
         coobe.falling = false;
        // coobe.jumpPressed = false;
 
     }
-    if(!coobe.jumpPressed && coobe.y < 269) //Falling until hits the ground
+    if(!coobe.jumpPressed && coobe.y <= 268) //Falling until hits the ground
     {
         coobe.jump = 180
         coobe.y += 7;
@@ -89,7 +88,7 @@ function drawCoobe()
         //coobe.onSomething = true; 
 
     }
-    if(coobe.y > 269){
+    if(coobe.y >= 269){
        coobe.onSomething = true;
        coobe.jumpPressed = false;
     }
@@ -118,8 +117,9 @@ document.onkeydown = function(e)
     {
         //jump();
         beats.push(frames);
-        //console.log("beat");
-        if(coobe.onSomething){
+        console.log("beat");
+        if(coobe.onSomething)
+        {
             coobe.jumpPressed = true;
         }
     }
@@ -157,8 +157,8 @@ function drawSpikes()
 }
 // Map of Spikes
 let spikeBeatles = 
-[162, 314, 439, 554, 668, 788, 854, 904, 947, 986, 1027, 1068, 1109
-//156, 314, 317, 384, 387, 390, 436, 551, 638, 717, 792, 868, 908, 947
+[
+160, 315, 318, 
 ];
 createSpikes()
 function createSpikes()
@@ -197,8 +197,11 @@ function drawGroundSquares()
 }
 // Map of Squares
 let groundSquareBeatles = 
-[
-381, 384, 387, 390, 393, 396, 399, 402, 405
+[157, 308, 394, 475, 556, 627, 709, 787, 865, 908, 949, 1023, 1066, 1106, 1183, 1223, 1261, 1338, 1377, 1416, 1456, 1494, 1563, 1718, 1760, 1802, 1843, 1883, 2016, 2155, 2196, 2237, 2314, 2352, 2391, 2493, 2533, 2576, 2671, 2709, 2751, 2830, 2867, 2945, 2985, 3138, 3217, 3297, 3341, 3378, 3415, 3453, 3492, 3531, 3573, 3613, 3650, 3688, 3725, 3766, 3880, 3961, 3991, 4039, 4080, 4157, 4238, 4312, 4393, 4470, 4548, 4624, 4702, 4783, 4896, 4978, 5056, 5137, 5211, 5241, 5289, 5368, 5447, 5525, 5617, 5693, 5777, 5839, 5920, 5995, 6101, 6139, 6179, 6218, 6256, 6396, 6430, 6538, 6575, 6615,
+6725, 6765, 6889, 6930, 6967, 7046, 7085, 7123, 7199, 7238, 7274, 7353, 7393, 7430, 7515, 7591, 7671, 7748, 7827, 7905, 7950, 7988, 8099, 8177, 8257, 8335, 8410, 8489, 8568, 8644, 8685, 8726, 8806, 8883, 8964, 9038, 9117, 9157, 9197, 9236, 9291, 9354, 9395, 9437, 9513, 9555, 9592, 9763, 9805, 9856, 9895, 9934, 9977, 10017, 10073, 10138, 10176, 10228, 10328, 10406, 10485, 10564, 10642, 10720, 10795, 10875, 10955, 11037, 11114, 11191, 11257, 11299, 11335, 11380, 11417, 11461, 11496, 11539, 11580, 11663, 11701, 11741, 11927, 11972, 12012, 12054, 12092, 12131, 12168, 12205, 12289, 12328, 12366, 12520, 12597, 12672, 12714, 12757, 12793, 12833,
+13147, 13185, 13226, 13269, 13309, 13351, 13388, 13428, 13466, 13547, 13624, 13701, 13780, 13857, 13933, 13975, 14016, 14093, 14131, 14172, 14212, 14250, 14287, 14328, 14367, 14405, 14443, 14483, 14523, 14561, 14600, 14641, 14680, 14715
+// 453, 541, 622, 697, 776, 858, 919, 921, 924, 927, 930, 933, 936, 939, 942, 945, 948, 951, 954, 957, 960, 
+// 1200, 1203, 1206, 1209, 1212, 1215, 1218, 1221, 1224, 1227, 1230
 ];
 createSquares()
 function createSquares()
@@ -238,7 +241,7 @@ function drawAirSquares()
 // Map of Platforms
 let airSquareBeatles = 
 [
-400, 403, 406, 409, 412, 415, 418, 421, 424, 427, 430
+963, 966, 969, 972, 975, 978, 981, 984, 987, 990, 993, 996, 999
 ];
 createPlatforms()
 function createPlatforms()
@@ -343,9 +346,9 @@ function animate()
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawCoobe();
     //drawOneSpike();
-    drawSpikes();
+    //drawSpikes();
     drawGroundSquares();
-    drawAirSquares();
+    //drawAirSquares();
     collision();
     frames++; 
 }
